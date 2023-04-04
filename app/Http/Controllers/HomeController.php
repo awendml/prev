@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Employee;
+use App\Models\Position;
+
 
 class HomeController extends Controller
 {
@@ -23,6 +26,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $employee = Employee::paginate(10);
+        $position = Position::all();
+
+        return view('employee',
+        ['title' => 'Employee']
+        
+        )->with('position',$position)->with('employee',$employee);
     }
 }

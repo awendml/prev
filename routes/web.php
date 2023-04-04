@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PrevController;
+use Illuminate\Http\Client\Request;
+use App\Models\Employee;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +24,7 @@ Route::get('/', function () {
 Route::get('/employee',[PrevController::class,'index']);
 Route::get('/employee/search',[PrevController::class,'search']);
 Route::get('/employee/add',[PrevController::class,'add']);
-Route::post('/employee/store',[PrevController::class,'store'])->name('post');
+Route::post('/employee/store',[PrevController::class,'store']);
 Route::get('/employee/edit/{id}',[PrevController::class,'edit']);
 Route::put('/employee/update/{id}',[PrevController::class,'update']);
 Route::get('/employee/delete/{id}',[PrevController::class,'delete']);
@@ -44,9 +46,6 @@ Route::get('/employee/delete_permanent/{id}',[PrevController::class,'deletePerma
 Route::get('/employee/restore_all',[PrevController::class,'restoreAll']);
 Route::get('/employee/delete_permanent_all',[PrevController::class,'depall']);
 
-// Upload file
-Route::get('/employee/upload',[PrevController::class,'upload']);
-Route::post('/employee/upload/proccess',[PrevController::class,'proccess']);
 
 // ckEditor
 Route::get('/employee/ckeditor',[PrevController::class,'ckeditor']);

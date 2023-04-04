@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Employee;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,12 +17,12 @@ class EmployeesSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
         for ($i=1; $i < 50; $i++) { 
-            \DB::table('employee')->insert([
+            Employee::insert([
                 'name' => $faker->name,
                 'numemp' =>$faker->randomNumber(5, true),
                 'address' =>$faker->address,
-                'image' =>$faker->image(storage_path('app/public/avatars'),50,50,null,false),
-                'id_position' =>$faker->numberBetween(1,5),
+                'foto' =>$faker->image(storage_path('app/public/avatars'),50,50,null,false),
+                'position_id' =>$faker->numberBetween(1,5),
             ]);
         }
     }

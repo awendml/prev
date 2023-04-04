@@ -13,9 +13,8 @@
                     <a href="/prev/employee" class="btn btn-secondary">back</a>
                     <br/>
                     <br/>
-                    <form method="POST" action="/prev/employee/store">
+                    <form method="POST" action="/prev/employee/store" enctype="multipart/form-data">
 
-                    {{-- <form  action="/prev/employee/store" method="POST"> --}}
                                                 @csrf
                         <div class="form-group">
                             <label>Name</label>
@@ -36,6 +35,18 @@
                              @if($errors->has('numemp'))
                                 <div class="text-danger">
                                     {{ $errors->first('numemp')}}
+                                </div>
+                            @endif
+ 
+                        </div>
+
+                        <div class="form-group">
+                            <label>Masukkan foto</label>
+                            <input type="file" name="foto" class="form-control" placeholder="Masukkan foto">
+ 
+                             @if($errors->has('foto'))
+                                <div class="text-danger">
+                                    {{ $errors->first('foto')}}
                                 </div>
                             @endif
  

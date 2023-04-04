@@ -13,13 +13,9 @@
 			</div>
 			<div class="card-body">
  
-				<a href="/prev/employee">back</a>
-				|
-				<a href="/prev/employee/trash" class="btn btn-sm btn-primary">Trash</a>
- 
+				<a href="/prev/employee">Back</a> 
 				<br/>
 				<br/>
- 
 				<a href="/prev/employee/restore_all">Restore all</a>
 				|
 				<a href="/prev/ ">Delete permanent all</a>
@@ -32,6 +28,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Number Employee</th>
+                            <th>Foto</th>
                             <th>Position</th>
                             <th>Option</th>
                         </tr>
@@ -42,6 +39,7 @@
                                 <td>{{$e->id}}</td>
                                 <td>{{$e->name}}</td>
                                 <td>{{$e->numemp}}</td>
+                                <td>{{ $e->foto }}</td>
                                 <td>{{$e->position->position}}</td>
 
                                 <td>

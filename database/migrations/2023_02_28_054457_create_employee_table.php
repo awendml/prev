@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->integer('numemp');
             $table->text('address')->nullable();
-            $table->string('image')->nullable();
+            $table->string('foto')->nullable();
             $table->unsignedBigInteger('position_id');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('position_id')->references('id')->on('position')->onDelete('cascade');

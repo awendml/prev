@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Position;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,7 +19,7 @@ class PositionSeeder extends Seeder
         $items = ['','Programmer','Technician','Server Engineer','Graphic Designer','Project Manager'];
         for ($i=1; $i <= 5; $i++) { 
             $role = $items[$i];
-            \DB::table('position')->insert([
+            Position::insert([
                 'id' => $i, 
                 'position' => $role,
             ]);
