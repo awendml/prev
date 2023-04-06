@@ -14,9 +14,45 @@
                                 <input type="text" name="cari" placeholder="Cari pegawai">
                                 <input type="submit" value="cari" class="btn-secondary lg ">
                             </form>
-    
-                            <a href="/prev/employee/add" class="btn btn-sm btn-secondary float-right mr-3">Tambahkan data</a>
-                            <a href="/prev/employee/trash" class="btn btn-sm btn-secondary float-right mr-3">Sampah</a>
+                            <div class="right float-right mr-3">
+                                <a href="/prev/employee/add" class="btn btn-sm btn-secondary">Tambahkan data</a>
+                                <a href="/prev/employee/trash" class="btn btn-sm btn-secondary">Sampah</a>
+                                <a href="/prev/employee/export" class="btn btn-sm btn-secondary" target="_blank">Ekspor excel</a>
+                                <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#importExcel">
+                                    Import excel
+                                </button>
+                                <a href="/prev/employee/prereport" class="btn btn-sm btn-secondary" target="_blank">Cetak PDF</a>
+
+                            </div>
+                     
+                            <!-- Import Excel -->
+                            <div class="modal fade" id="importExcel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <form method="post" action="/prev/employee/import" enctype="multipart/form-data">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
+                                            </div>
+                                            <div class="modal-body">
+                     
+                                                {{ csrf_field() }}
+                     
+                                                <label>Pilih file excel</label>
+                                                <div class="form-group">
+                                                    <input type="file" name="file" required="required">
+                                                </div>
+                     
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Import</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                     
+
     
                             <thead>
                                 <tr>

@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers;
 
+
+
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\Position;
+use Session;
+use PDF;
+
+use App\Exports\EmployeeExport;
+use App\Imports\EmployeeImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+
 
 
 class PrevController extends Controller
@@ -84,6 +93,7 @@ class PrevController extends Controller
         $employee->foto = $request->foto;
         $employee->position_id = $request->position;
         $employee->save();
+        
         return redirect('/employee');
 
     }
@@ -189,5 +199,56 @@ class PrevController extends Controller
         $position->delete();
 
         return redirect()->back();
+    }
+
+    // Export
+    public function export()
+	{
+		return Excel::download(new EmployeeExport, 'employee.xlsx');
+	}
+
+    // Import
+    public function import(Request $request) 
+	{
+        // validasi
+		$this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+		]);
+        
+		// menangkap file excel
+		$file = $request->file('file');
+        $path = public_path('/files');
+
+		// membuat nama file unik
+		$nama_file = $file->getClientOriginalName();
+
+        
+		// upload ke folder file_siswa di dalam folder public
+		$file->move($path, $nama_file);
+		// import data
+		Excel::import(new EmployeeImport, $path.'/'.$nama_file);
+
+ 
+		// notifikasi dengan session
+		Session::flash('sukses','Data Pegawa Berhasil Diimport!');
+ 
+		// alihkan halaman kembali
+		return redirect('/employee');
+	}
+
+    public function preReport()
+    {
+        $employee = Employee::all();
+ 
+    	return view('employee-pdf',['employee'=>$employee]);
+    }
+    // Report PDF
+    public function report()
+    {
+    	$employee = Employee::all();
+ 
+    	$pdf = PDF::loadview('employee-pdf',['employee'=>$employee]);
+
+    	return $pdf->download('laporan-pegawai-pdf');
     }
 }

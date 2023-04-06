@@ -39,6 +39,14 @@ Route::put('/position/update/{id}',[PrevController::class,'updatePosition']);
 Route::get('/position/delete/{id}',[PrevController::class,'deletePosition']);
 Route::get('/position/trash',[PrevController::class,'trashPosition']);
 
+// Export excel
+Route::get('/employee/export',[PrevController::class,'export']);
+// Import excel
+Route::post('/employee/import',[PrevController::class,'import']);
+// Reporting PDF
+Route::get('/employee/prereport',[PrevController::class,'preReport']);
+Route::get('/employee/report',[PrevController::class,'report']);
+
 
 // Soft deletes routes
 Route::get('/employee/restore/{id}',[PrevController::class,'restore']);
