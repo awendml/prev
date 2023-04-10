@@ -57,12 +57,12 @@
 
                         <div class="form-group">
                             <label>Masukkan foto</label>
-                            <input type="file" name="foto" class="form-control" placeholder="Masukkan foto">
- 
+                            <input type="file" name="foto" value="{{ old('foto') }}" class="form-control" placeholder="Masukkan foto">
+                            
                              @if($errors->has('foto'))
-                                <div class="text-danger">
-                                    {{ $errors->first('foto')}}
-                                </div>
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('foto')}}</strong>  
+                                </span>
                             @endif
  
                         </div>

@@ -21,7 +21,6 @@ class EmployeesSeeder extends Seeder
                 'name' => $faker->name,
                 'numemp' =>$faker->randomNumber(5, true),
                 'address' =>$faker->address,
-                'foto' =>$faker->image(storage_path('app/public/avatars'),50,50,null,false),
                 'position_id' =>$faker->numberBetween(1,5),
             ]);
         }

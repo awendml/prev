@@ -16,7 +16,7 @@ class PositionSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create('id_ID');
-        $items = ['','Programmer','Technician','Server Engineer','Graphic Designer','Project Manager'];
+        $items = ['','Programmer','Technician','Server Administrator','Graphic Designer','Project Manager'];
         for ($i=1; $i <= 5; $i++) { 
             $role = $items[$i];
             Position::insert([

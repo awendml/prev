@@ -3,6 +3,11 @@
 <body>
         <div class="content-wrapper">
         <h3 class="content-header"><h3>{{ $title }}</h3>
+    @if(session('status'))
+            <div class="alert alert-success alert-block">
+                {{ session('status') }}
+            </div>
+    @endif
         <div class="container"> 
             <div class="card">
                 <div class="card-body">
@@ -29,6 +34,8 @@
                             <div class="modal fade" id="importExcel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <form method="post" action="/prev/employee/import" enctype="multipart/form-data">
+
+
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
@@ -71,7 +78,11 @@
                                         <td>{{$e->id}}</td>
                                         <td>{{$e->name}}</td>
                                         <td>
-                                            <img src="{{ asset('images/'.$e->foto) }}" alt="Gambar" width="50px">
+                                            @if ($e->foto)
+                                                <img src="{{ asset('images/'.$e->foto) }}" alt="Gambar" width="50px">
+                                            @else
+                                                <p>Tidak ada gambar</p>
+                                            @endif
                                         </td>
                                         <td>{!! $e->alamat !!}</td>
                                         <td>{{$e->numemp}}</td>
