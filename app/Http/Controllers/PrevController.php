@@ -30,12 +30,14 @@ class PrevController extends Controller
     {
         // catch data from input form
         $search = $request->search;
+       
         // matching data catched with data in the table 
         $employee = Employee::where('name','like',"%".$search."%")->paginate(); 
 
         // Displaying data to view
         return view('employee',[
-            'employee' => $employee
+            'title' => 'Pegawai',
+            'employee' => $employee,
         ]);
     }
 
@@ -49,26 +51,97 @@ class PrevController extends Controller
 
 
     public function store(Request $request)
-    {
-        $messages = [
-            'required' => ':attribute must be fill',
-            'numeric' => ':attribute must be number',
-            'size' => 'the :attribute must be exactly :size '
+    // {
+    //     $rules = [
+    //         'name' => 'required|max:255',
+    //         'address' => 'required',
+    //         'numemp' => 'required|numeric',
+    //         'foto' => 'required|image|mimes:jpeg,png,jpg,gif',
+    //         'position' => 'required'
+    //     ];
+        
+    //     $messages = [
+    //         'name.required' => 'Nama wajib diisi.',
+    //         'name.max' => 'Nama maksimal 255 karakter.',
+    //         'numemp.numeric' => 'Nomor pegawai harus berupa angka.',
+    //         'numemp.required' => 'Nomor pegawai harus diisi',
+    //         'foto.image' => 'File harus berupa gambar.',
+    //         'foto.mimes' => 'File harus memiliki format jpeg, png, jpg, atau gif.',
+    //         'position.required' => 'Posisi wajib dipilih.',
+    //         'address.required' => 'Masukkan alamat!'
+    //     ];
+        
+    //     $validator = Validator::make($request->all(), $rules, $messages);
+        
+    //     if ($validator->fails()) {
+    //         return redirect()
+    //         ->back()
+    //         ->withErrors($validator)
+    //         ->withInput();
+    //     }
 
-        ];
-        $this->validate($request, [
-            'name' => 'required',
-            'numemp' => 'required|numeric',
-            'position_id' => 'required'
-        ],$messages);
-        $employee = Employee::create($request->all());
-        if ($request->hasFile('foto')) {
-            $request->file('foto')->move(public_path('images/'), $request->file('foto')->getClientOriginalName());
-            $employee->foto = $request->file('foto')->getClientOriginalName();
-            $employee->save();
-        }
-        return redirect('/employee')->with('status','Data berhasil ditambahkan');
+        
+    //     $employee = Employee::create($request->all());
+    //     if ($request->hasFile('foto')) {
+    //         $request->file('foto')->move(public_path('images/'), $request->file('foto')->getClientOriginalName());
+    //         $employee->foto = $request->file('foto')->getClientOriginalName();
+    //         $employee->save();
+    //     }
+    //     return redirect('/employee')->with('status','Data berhasil ditambahkan');
+    // }
+{
+    // dd($request);
+    $rules = [
+        'name' => 'required|max:255',
+        'address' => 'required',
+        'numemp' => 'required|numeric',
+        'foto' => 'required|image|mimes:jpeg,png,jpg,gif',
+        'position_id' => 'required|integer|min:1', // tambahkan aturan integer dan min 1 untuk memastikan input adalah ID posisi yang valid
+
+    ];
+    
+    $messages = [
+        'name.required' => 'Nama wajib diisi.',
+        'name.max' => 'Nama maksimal 255 karakter.',
+        'numemp.numeric' => 'Nomor pegawai harus berupa angka.',
+        'numemp.required' => 'Nomor pegawai harus diisi',
+        'foto.required' => 'Foto wajib diisi.',
+        'foto.image' => 'File harus berupa gambar.',
+        'foto.mimes' => 'File harus memiliki format jpeg, png, jpg, atau gif.',
+        'position_id.required' => 'Posisi wajib dipilih.',
+        'position_id.min' => 'Pilih posisi yang valid!.',
+        'address.required' => 'Masukkan alamat!',
+    ];
+    
+    $validator = Validator::make($request->all(), $rules, $messages);
+    
+    if ($validator->fails()) {
+        return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput();
     }
+    $position_id = $request->position === 'Choose position' ? null : $request->position;
+
+    
+    $employee = new Employee;
+    $employee->name = $request->input('name');
+    $employee->address = $request->input('address');
+    $employee->numemp = $request->input('numemp');
+    $employee->position_id = $request->$position_id;
+    
+    if ($request->hasFile('foto')) {
+        $foto = $request->file('foto');
+        $fotoName = time() . '_' . $foto->getClientOriginalName();
+        $destinationPath = public_path('/images');
+        $foto->move($destinationPath, $fotoName);
+        $employee->foto = $fotoName;
+    }
+    
+    $employee->save();
+    
+    return redirect('/employee')->with('status', 'Data berhasil ditambahkan');
+}
 
     public function edit($id)
     {
@@ -88,20 +161,21 @@ class PrevController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
+            'address' => 'required',
             'numemp' => 'required|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-            'position' => 'required|integer|min:1', // tambahkan aturan integer dan min 1 untuk memastikan input adalah ID posisi yang valid
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'position_id' => 'required', // tambahkan aturan integer dan min 1 untuk memastikan input adalah ID posisi yang valid
         ];
         
         $messages = [
-            'name.required' => 'Nama produk wajib diisi.',
-            'name.max' => 'Nama produk maksimal 255 karakter.',
-            'numemp.numeric' => 'Harga produk harus berupa angka.',
+            'name.required' => 'Nama wajib diisi.',
+            'name.max' => 'Nama maksimal 255 karakter.',
+            'numemp.numeric' => 'Nomor pegawai harus berupa angka.',
+            'foto.required' => 'File wajib diisi.',
             'foto.image' => 'File harus berupa gambar.',
             'foto.mimes' => 'File harus memiliki format jpeg, png, jpg, atau gif.',
-            'position.required' => 'Posisi wajib diisi.',
-            'position.integer' => 'Pilih posisi yang benar.',
-            'position.min' => 'Pilih posisi yang benar.',
+            'position_id.required' => 'Posisi wajib diisi.',
+            'address.required' => 'Masukkan alamat!'
         ];
         
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -113,18 +187,24 @@ class PrevController extends Controller
                 ->withInput();
         }
         
-        // ubah nilai 'Choose position' menjadi null
-        $position_id = $request->position === 'Choose position' ? null : $request->position;
-        
         $employee = Employee::find($id);
         $employee->name = $request->name;
         $employee->address = $request->address;
         $employee->numemp = $request->numemp;
-        $employee->foto = $request->foto;
-        $employee->position_id = $position_id;
+        
+        if ($request->file('foto')) {
+
+            $request->file('foto')->move(public_path('images/'), $request->file('foto')->getClientOriginalName());
+            $employee->foto = $request->file('foto')->getClientOriginalName();
+        }else 
+        {
+            $employee->foto = null;
+         }
+        
+        $employee->position_id = $request->position_id;
         $employee->save();
 
-        return redirect('/employee');
+        return redirect('/employee')->withErrors($validator);
         
     }
 

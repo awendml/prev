@@ -18,7 +18,7 @@
                                                 @csrf
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" name="name" class="form-control" placeholder="Employee name ..">
+                            <input type="text" name="name" value="{{ old('name') }}" class="form-control" placeholder="Employee name ..">
  
                             @if($errors->has('name'))
                                 <div class="text-danger">
@@ -30,11 +30,22 @@
  
                         <div class="form-group">
                             <label>Number Employee</label>
-                            <textarea name="numemp" class="form-control" placeholder="Number employee .."></textarea>
+                            <textarea name="numemp" class="form-control"  placeholder="Number employee ..">{{ old('numemp') }}</textarea>
  
                              @if($errors->has('numemp'))
                                 <div class="text-danger">
                                     {{ $errors->first('numemp')}}
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="form-group">
+                            <label>Address</label>
+                            <textarea name="address" id="address"  class="form-control">{{ old('address') }}</textarea>
+ 
+                            @if($errors->has('address'))
+                                <div class="text-danger">
+                                    {{ $errors->first('address')}}
                                 </div>
                             @endif
  
@@ -42,19 +53,18 @@
 
                         <div class="form-group">
                             <label>Masukkan foto</label>
-                            <input type="file" name="foto" class="form-control" placeholder="Masukkan foto">
+                            <input type="file" name="foto" class="form-control" value="{{ old('foto') }}" placeholder="Masukkan foto">
  
                              @if($errors->has('foto'))
                                 <div class="text-danger">
                                     {{ $errors->first('foto')}}
                                 </div>
                             @endif
- 
                         </div>
 
                         <div class="form-group">
-                            <select class="form-select" name="position_id" id="position" aria-label="Default select example">
-                                <option selected>Open this select menu</option>
+                            <select class="form-select" name="position_id" id="position_id"  aria-label="Default select example">
+                                <option selected>{{ null }}</option>
                                 @foreach ($position as $e)     
                                  <option value="{{ $e->id }}">{{ $e->position }}</option>
                                 @endforeach
@@ -70,5 +80,13 @@
                 </div>
             </div>
         </div>
+        <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+        <script>
+            ClassicEditor
+                .create( document.querySelector( '#address' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
+        </script>
     </body>
 </html>

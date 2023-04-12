@@ -4,8 +4,11 @@
         <div class="content-wrapper">
         <h3 class="content-header"><h3>{{ $title }}</h3>
     @if(session('status'))
-            <div class="alert alert-success alert-block">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 {{ session('status') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
     @endif
         <div class="container"> 
@@ -15,8 +18,8 @@
                     <div>
                         <table class="table table-striped" >
                             
-                            <form action="/prev/employee/" method="GET">
-                                <input type="text" name="cari" placeholder="Cari pegawai">
+                            <form action="/prev/employee/search" method="GET">
+                                <input type="text" name="search" placeholder="Cari pegawai" value="{{ old('search') }}">
                                 <input type="submit" value="cari" class="btn-secondary lg ">
                             </form>
                             <div class="right float-right mr-3">
@@ -84,7 +87,7 @@
                                                 <p>Tidak ada gambar</p>
                                             @endif
                                         </td>
-                                        <td>{!! $e->alamat !!}</td>
+                                        <td>{!! $e->address !!}</td>
                                         <td>{{$e->numemp}}</td>
                                         <td>{{$e->position->position}}</td>
     
