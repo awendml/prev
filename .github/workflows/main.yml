@@ -24,4 +24,4 @@ jobs:
 
         - name: Jalan Unit Test
           run: |
-          vendor/bin/phpunit
+          ./vendor/bin/phpunit
